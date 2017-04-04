@@ -23,9 +23,15 @@
     "test:watch": "npm run test -- --watch",
     "game": "node --require babel-register src/index.js"
   },
-  "pre-commit": [ "lint" ],
-  "pre-push": [ "lint", "test" ],
+  "pre-commit": [
+    "lint"
+  ],
+  "pre-push": [
+    "lint",
+    "test"
+  ],
   "dependencies": {
+    "bluebird": "^3.5.0",
     "prompt": "^1.0.0"
   },
   "devDependencies": {

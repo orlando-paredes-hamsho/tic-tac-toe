@@ -1,8 +1,3 @@
-import prompt from 'prompt';
+import game from './game';
 
-console.log('Game Started');
-prompt.start();
-
-prompt.get(['Your Move?'], (err, result) => {
-	console.log('Your Move was: ' + result);
-});
+game.start();
