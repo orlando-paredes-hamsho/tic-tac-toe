@@ -1,8 +1,15 @@
 import chai, { expect } from 'chai';
-import board from '../src/board';
+import make_board from '../src/board';
+
+let board;
 
 describe('Board', () => {
-    context('Initial State', () => {		
+    context('Initial State', () => {	
+		
+		beforeEach('Make a new Board', () => {
+			board = make_board();	
+		});
+		
 		it('returns empty board spaces', () => {
 			let spaces = board.spaces;
 			for(let space in spaces){
@@ -30,5 +37,20 @@ describe('Board', () => {
 			);
 			expect(board.render()).to.equal(empty_board);
 		});
+    });
+	
+	context('Space wants to be occupied', () => {	
+		
+		context('The space is valid', () => {
+			it('adds the value to the board spaces', () => {
+
+			});
+		});
+		
+		context('The space is invalid', () => {
+			
+		});
+		
+		
     });
 });
