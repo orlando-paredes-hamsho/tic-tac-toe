@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai';
-import make_board from '../src/board';
+import make_board from '../src/make-board';
 
 let board;
 
