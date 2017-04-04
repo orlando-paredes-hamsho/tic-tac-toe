@@ -2,20 +2,6 @@
   "name": "tic-tac-toe",
   "version": "0.0.0",
   "description": "Tic-Tac-Toe",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint ./src",
-    "test": "mocha --require babel-register --recursive ./test",
-    "test:watch": "npm run test -- --watch",
-    "game": "node --require babel-register src/index.js"
-  },
-  "pre-commit": {
-    "run": "lint"
-  },
-  "pre-push": [
-    "lint",
-    "test"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/orlando-paredes-hamsho/tic-tac-toe.git"
@@ -30,6 +16,15 @@
     "url": "https://github.com/orlando-paredes-hamsho/tic-tac-toe.git/issues"
   },
   "homepage": "https://github.com/orlando-paredes-hamsho/tic-tac-toe.git#readme",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./src",
+    "test": "mocha --require babel-register --recursive ./test",
+    "test:watch": "npm run test -- --watch",
+    "game": "node --require babel-register src/index.js"
+  },
+  "pre-commit": [ "lint" ],
+  "pre-push": [ "lint", "test" ],
   "dependencies": {
     "prompt": "^1.0.0"
   },
