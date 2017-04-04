@@ -42,9 +42,7 @@ describe('Board', () => {
 	context('Space wants to be occupied', () => {	
 		
 		context('The space is valid', () => {
-			it('adds the value to the board spaces', () => {
-
-			});
+			
 		});
 		
 		context('The space is invalid', () => {
