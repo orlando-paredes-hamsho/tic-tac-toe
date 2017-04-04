@@ -1,4 +1,4 @@
-const prompt = require('prompt');
+import prompt from 'prompt';
 
 console.log('Game Started');
 prompt.start();
