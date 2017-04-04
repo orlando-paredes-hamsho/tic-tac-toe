@@ -14,7 +14,7 @@ describe('Board', () => {
 			let spaces = board.spaces;
 			for(let space in spaces){
 				if(spaces.hasOwnProperty(space)) {
-					expect(spaces[space]).to.equal(' ');
+					expect(spaces[space]).to.not.exist;
 				}
 			}
 		});
@@ -28,11 +28,11 @@ describe('Board', () => {
 		it('renders an empty board', () => {
 			const empty_board = (
 				'|---|---|---|\n' + 
-				'|   |   |   |\n' +
+				'| 1 | 2 | 3 |\n' +
 				'|---|---|---|\n' +
-				'|   |   |   |\n' +
+				'| 4 | 5 | 6 |\n' +
 				'|---|---|---|\n' +
-				'|   |   |   |\n' +
+				'| 7 | 8 | 9 |\n' +
 				'|---|---|---|\n' 
 			);
 			expect(board.render()).to.equal(empty_board);

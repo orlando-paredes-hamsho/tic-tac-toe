@@ -13,11 +13,11 @@ describe('Game', () => {
 		it('renders an empty board', () => {
 			const empty_board = (
 				'|---|---|---|\n' + 
-				'|   |   |   |\n' +
+				'| 1 | 2 | 3 |\n' +
 				'|---|---|---|\n' +
-				'|   |   |   |\n' +
+				'| 4 | 5 | 6 |\n' +
 				'|---|---|---|\n' +
-				'|   |   |   |\n' +
+				'| 7 | 8 | 9 |\n' +
 				'|---|---|---|\n' 
 			);
 			expect(game.draw_board()).to.equal(empty_board);
