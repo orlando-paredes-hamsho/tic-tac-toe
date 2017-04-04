@@ -10,7 +10,7 @@ describe('Board', () => {
 			board = make_board();	
 		});
 		
-		it('returns empty board spaces', () => {
+	it('returns empty board spaces', () => {
 			let spaces = board.spaces;
 			for(let space in spaces){
 				if(spaces.hasOwnProperty(space)) {
@@ -23,6 +23,10 @@ describe('Board', () => {
 			let spaces = board.spaces;
 			const board_spaces = ['1','2','3','4','5','6','7','8','9'];
 			expect(Object.getOwnPropertyNames(spaces)).to.deep.equal(board_spaces);
+		});
+		
+		it('renders the space number when the space is empty', () => {
+			expect(board.render_space(1)).to.equal(1);
 		});
 		
 		it('renders an empty board', () => {
