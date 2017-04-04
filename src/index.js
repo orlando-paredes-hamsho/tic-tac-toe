@@ -5,4 +5,4 @@ prompt.start();
 
 prompt.get(['Your Move?'], (err, result) => {
 	console.log('Your Move was: ' + result);
-});
+})
