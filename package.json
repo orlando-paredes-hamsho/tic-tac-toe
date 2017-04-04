@@ -13,8 +13,20 @@
   "pre-push": [
     "lint"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orlando-paredes-hamsho/tic-tac-toe.git"
+  },
+  "keywords": [
+    "node",
+    "command-line"
+  ],
   "author": "Orlando Paredes Hamsho <hello@orlandohamsho.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orlando-paredes-hamsho/tic-tac-toe.git/issues"
+  },
+  "homepage": "https://github.com/orlando-paredes-hamsho/tic-tac-toe.git#readme",
   "dependencies": {
     "prompt": "^1.0.0"
   },
