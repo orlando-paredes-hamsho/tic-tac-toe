@@ -13,7 +13,8 @@
     "lint"
   ],
   "pre-push": [
-    "lint"
+    "lint",
+    "push"
   ],
   "repository": {
     "type": "git",
