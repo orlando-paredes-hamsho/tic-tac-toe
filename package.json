@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src",
-    "game": "node src/index.js"
+    "test": "mocha --require babel-register --recursive ./test",
+    "test:watch": "npm run test -- --watch",
+    "game": "node --require babel-register src/index.js"
   },
   "pre-commit": [
     "lint"
@@ -31,7 +33,10 @@
     "prompt": "^1.0.0"
   },
   "devDependencies": {
+    "babel": "^6.23.0",
     "babel-core": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-register": "^6.24.0",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.1.3",
