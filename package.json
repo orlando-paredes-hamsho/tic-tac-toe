@@ -14,7 +14,7 @@
   ],
   "pre-push": [
     "lint",
-    "push"
+    "test"
   ],
   "repository": {
     "type": "git",
