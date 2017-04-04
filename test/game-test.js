@@ -1,12 +1,27 @@
 import chai, { expect } from 'chai';
-import game from '../src/game';
+import make_game from '../src/make-game';
 
-
+let game;
 
 describe('Game', () => {
-    context('Starting the game', () => {
-		it('Draws a board', () => {
-			
+    context('Initial State', () => {	
+		
+		beforeEach('Make a new Game', () => {
+			game = make_game();	
+		});
+		
+		it('renders an empty board', () => {
+			const empty_board = (
+				'|---|---|---|\n' + 
+				'|   |   |   |\n' +
+				'|---|---|---|\n' +
+				'|   |   |   |\n' +
+				'|---|---|---|\n' +
+				'|   |   |   |\n' +
+				'|---|---|---|\n' 
+			);
+			expect(game.draw_board()).to.equal(empty_board);
 		});
     });
-})
+	
+});
