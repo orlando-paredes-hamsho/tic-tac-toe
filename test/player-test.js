@@ -8,7 +8,7 @@ describe('Player', () => {
 		context('Player gets created correctly', () => {
 		
 			beforeEach('Create player', () => {
-	    		player = make_player({marker:'x'});
+	    		player = make_player('x');
 	    	});
     	
 			it('should have the marker that was passed in', () => {
@@ -24,14 +24,14 @@ describe('Player', () => {
 		context('Player gets created incorrectly', () => {
 			it('should throw an error', () => {
 				const marker = 'z';
-				expect(make_player.bind(this, {marker})).to.throw('Valid marker values are \'x\' and \'o\'');
+				expect(make_player.bind(this, marker)).to.throw('Valid marker values are \'x\' and \'o\'');
 			});
 		});
     });
     
     context('Player makes a move', () => {
     	beforeEach('Create player', () => {
-    		player = make_player({marker:'x'});
+    		player = make_player('x');
     	});
     	
     	it('should return the space and the marker', () => {
@@ -41,7 +41,7 @@ describe('Player', () => {
     
     context('Player claims a space', () => {
     	beforeEach('Create player', () => {
-    		player = make_player({marker:'x'});
+    		player = make_player('x');
     	});
     	
     	context('Player is successfull', () => {

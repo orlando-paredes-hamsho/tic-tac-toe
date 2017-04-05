@@ -1,4 +1,15 @@
-const make_player = ({marker}) => {
+/**
+ * make_player(marker) makes a tic tac toe player.
+ * @param {String} marker to identify the player
+ * @return {Object} player
+ ** 
+ * player object
+ * @prop {Array} spaces_claimed
+ * @prop {String} marker
+ * @method {Object} move({Number} space)
+ * @method {Void} claim_space({Object} {{Boolean} success, {Number} space, {String} error })
+ */
+const make_player = (marker) => {
 	const valid_markers = ['x','o'];
 	
 	if (valid_markers.indexOf(marker) === -1) {
