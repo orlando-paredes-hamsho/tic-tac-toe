@@ -6,11 +6,19 @@ let player;
 describe('Player', () => {
     context('Creating a player', () => {	
 		context('Player gets created correctly', () => {
+		
+			beforeEach('Create player', () => {
+	    		player = make_player({marker:'x'});
+	    	});
+    	
 			it('should have the marker that was passed in', () => {
-				const marker = 'x';
-				player = make_player({marker});
-				expect(player.marker).to.equal(marker);
+				expect(player.marker).to.equal('x');
 			});
+			
+			it('Has 0 claimed spaces', () => {
+				expect(player.spaces_claimed.length).to.equal(0);
+			});
+			
 		});
 		
 		context('Player gets created incorrectly', () => {
@@ -20,4 +28,35 @@ describe('Player', () => {
 			});
 		});
     });
+    
+    context('Player makes a move', () => {
+    	beforeEach('Create player', () => {
+    		player = make_player({marker:'x'});
+    	});
+    	
+    	it('should return the space and the marker', () => {
+			expect(player.move(1)).to.deep.equal({ space:1, marker:'x' })
+		});
+    });
+    
+    context('Player claims a space', () => {
+    	beforeEach('Create player', () => {
+    		player = make_player({marker:'x'});
+    	});
+    	
+    	context('Player is successfull', () => {
+    		it('adds the claimed space to the spaces_claimed array', () => {
+    			player.claim_space({ success: true, space: 1 });
+    			expect(player.spaces_claimed).to.include(1);
+    		});
+    	});
+    	
+    	context('Player is unsuccessfull', () => {
+    		it('Throws an error', () => {
+    			expect(player.claim_space.bind(player, { success: false, error: 'some error' })).to.throw('some error');
+    		});
+    	});
+    	
+    });
+    
 });

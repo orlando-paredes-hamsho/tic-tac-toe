@@ -12,7 +12,7 @@ function make_board() {
 				return { success: false, error: 'This space is already taken' };
 			} else if (this.spaces.hasOwnProperty(space)) {
 				this.spaces[space] = marker;
-				return {success: true};
+				return {success: true, space};
 			} else {
 				return { success: false, error: 'That space is not in the board' };
 			}
