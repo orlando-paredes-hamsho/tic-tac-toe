@@ -1,18 +1,14 @@
 import chai, { expect } from 'chai';
 import request_user_action from '../src/utility/request-user-action';
+import {stdin as callable_stdin } from 'mock-stdin';
 
-describe('request-user-action', function () {
-  let stdin;
-  beforeEach(function () {
-    stdin = require('mock-stdin').stdin();
-  });
-  it('asks a question', function () {
-    process.nextTick(function mockResponse() {
-      stdin.send('response');
-    });
-    return request_user_action('question: test')
-      .then(function (response) {
-        console.assert(response === 'response');
-      });
-  });
+const stdin = callable_stdin();
+
+describe('request-user-action', () => {
+	it('requests an action', () => {
+		process.nextTick(() => stdin.send('response'));
+		return request_user_action('Say response').then((response) => {
+			console.assert(response === 'response');
+		});
+	});
 });
