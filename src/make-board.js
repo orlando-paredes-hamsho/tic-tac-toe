@@ -16,7 +16,6 @@ function make_board() {
 			} else {
 				return { success: false, error: 'That space is not in the board' };
 			}
-			return true;
 		},
 		render() {
 			return (

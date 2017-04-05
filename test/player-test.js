@@ -13,7 +13,7 @@ describe('Player', () => {
 			});
 		});
 		
-		context('Player gets created in-correctly', () => {
+		context('Player gets created incorrectly', () => {
 			it('should throw an error', () => {
 				const marker = 'z';
 				expect(make_player.bind(this, {marker})).to.throw('Valid marker values are \'x\' and \'o\'');
