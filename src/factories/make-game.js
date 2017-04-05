@@ -3,6 +3,11 @@ import request_user_action from '../utility/request-user-action';
 
 /**
  * make_game() makes a tic tac toe game.
+ * @return {Object} game
+ **
+ * game object
+ * @method {String} draw_board()
+ * @method {Void} start()
  */
 const make_game = () => {
 	
@@ -12,7 +17,7 @@ const make_game = () => {
 	return {
 		/**
 		* draw_board() outputs a rendered board to the console
-		* @return string representation of the rendered board
+		* @return {String} string representation of the rendered board
 		**/
 		draw_board() {
 			const renderedBoard = board.render();
