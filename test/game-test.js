@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai';
-import make_game from '../src/make-game';
+import make_game from '../src/factories/make-game';
 
 let game;
 

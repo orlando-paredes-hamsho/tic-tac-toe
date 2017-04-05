@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai';
-import make_player from '../src/make-player';
+import make_player from '../src/factories/make-player';
 
 let player;
 
