@@ -7,6 +7,17 @@ function make_board() {
 		render_space(space) {
 			return (this.spaces[space]) ? this.spaces[space]: space;
 		},
+		occupy({space, marker}) {
+			if (this.spaces[space]) {
+				return { success: false, error: 'This space is already taken' };
+			} else if (this.spaces.hasOwnProperty(space)) {
+				this.spaces[space] = marker;
+				return {success: true};
+			} else {
+				return { success: false, error: 'That space is not in the board' };
+			}
+			return true;
+		},
 		render() {
 			return (
 				'|---|---|---|\n' + 
