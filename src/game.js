@@ -54,7 +54,7 @@ const game = ((make_board, make_player, victory_conditions) => {
 				const was_space_occupied = board.occupy({space, marker: current_player.marker});
 				const space_claimed = current_player.claim_space(was_space_occupied);
 				const board_full = (board.get_empty_spaces().length === 0);
-				const player_victory = victory_conditions.claim_victory(current_player.spaces_claimed);
+				const player_victory = victory_conditions.claim_victory(current_player.get_spaces());
 				switch(resolve(player_victory, board_full)) {
 				case 'victory':
 					draw_board();
