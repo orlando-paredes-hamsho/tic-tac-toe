@@ -29,16 +29,6 @@ describe('Player', () => {
 		});
     });
     
-    context('Player makes a move', () => {
-    	beforeEach('Create player', () => {
-    		player = make_player('x');
-    	});
-    	
-    	it('should return the space and the marker', () => {
-			expect(player.move(1)).to.deep.equal({ space:1, marker:'x' })
-		});
-    });
-    
     context('Player claims a space', () => {
     	beforeEach('Create player', () => {
     		player = make_player('x');
@@ -49,11 +39,21 @@ describe('Player', () => {
     			player.claim_space({ success: true, space: 1 });
     			expect(player.spaces_claimed).to.include(1);
     		});
+    		
+    		it('returns an object with a value of true for success and an empty error', () => {
+    			expect(player.claim_space({ success: true, space: 1 })).to.deep.equal({success:true, error: ''});
+    		});
     	});
     	
     	context('Player is unsuccessfull', () => {
-    		it('Throws an error', () => {
-    			expect(player.claim_space.bind(player, { success: false, error: 'some error' })).to.throw('some error');
+    		it('returns an object with a value of false for success and an error', () => {
+    			expect(player.claim_space({ success: false, error: 'some error' })).to.deep.equal({ success: false, error: 'some error' });
+    		});
+    	});
+    	
+    	context('Player is successfull, but no space is provided', () => {
+    		it('returns an object with a value of false for success and an error', () => {
+    			expect(player.claim_space({ success: true })).to.deep.equal({ success: false, error: 'No space was provided' });
     		});
     	});
     	

@@ -24,25 +24,15 @@ const make_player = (marker) => {
 		// String to identify the player
 		marker,
 		/**
-		* move(space) represents the move the player wants to make
-		* @param {Number} space, whatever space on the board we want to occupy
-		* @return {Object} made of {Number} space and {String} marker
-		**/
-		move(space) {
-			return { space, marker:this.marker };
-		},
-		/**
 		* claim_space(space) if we successfully claimed a space, add it to our spaces claimed.
 		* @param {Boolean} success
 		* @param {Number} space that we want to claim
 		* @param {String} error in case we had one
 		**/
 		claim_space({success, space, error = ''}) {
-			if (success) {
-				this.spaces_claimed.push(space);
-			} else {
-				throw error;
-			}
+			if(success && !space) return {success: false, error: 'No space was provided'};
+			if (success) this.spaces_claimed.push(space);
+			return {success, error};
 		}
 	};
 };
