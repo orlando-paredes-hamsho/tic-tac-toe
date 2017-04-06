@@ -1,3 +1,5 @@
-import make_game from './factories/make-game';
-const game = make_game();
+import game from './game';
+
+
+console.log('Welcome to Tic-Tac-Toe, let\'s have some fun!');
 game.start();
