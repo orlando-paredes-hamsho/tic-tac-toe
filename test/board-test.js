@@ -74,7 +74,7 @@ describe('Board', () => {
 			);
 			expect(board.render()).to.equal(full_board);
 		});
-    });
+	});
 	
 	context('Space wants to be occupied', () => {	
 		

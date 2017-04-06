@@ -31,15 +31,32 @@ const game = ((make_board, make_player, victory_conditions) => {
 				.then((space) => {
 					const was_space_occupied = board.occupy({space, marker: current_player.marker});
 					const space_claimed = current_player.claim_space(was_space_occupied);
-					if (victory_conditions.claim_victory(current_player.spaces_claimed)) {
+					const board_full = (board.get_empty_spaces().length === 0);
+					const player_victory = victory_conditions.claim_victory(current_player.spaces_claimed);
+					switch(this.resolve(player_victory, board_full)) {
+					case 'victory':
 						draw_board();
 						console.log(`Player '${current_player.marker}', wins`);
 						this.start();
-					} else {
-						const next_player_set = this.select_next_player_set(space_claimed, {current_player,next_player});
-						this.request_player_move(next_player_set);
+						break;
+					case 'tie':
+						draw_board();
+						console.log('It\'s a tie!');
+						this.start();
+						break;
+					case 'continue':
+						this.request_player_move(this.select_next_player_set(space_claimed, {current_player,next_player}));
+						break;
 					}
 				});
+		},
+		resolve(player_victory, tie) {
+			if(player_victory) {
+				return 'victory';
+			} else if(tie) {
+				return 'tie';
+			}
+			return 'continue';
 		},
 		/**
 		* start() begins a full tic-tac-toe game loop
@@ -67,7 +84,8 @@ const game = ((make_board, make_player, victory_conditions) => {
 				}
 			);
 		},
-		select_next_player_set({success, error}, {current_player, next_player}) {
+		select_next_player_set({success, error = ''}, {current_player, next_player}) {
+			if(!current_player || !next_player) throw 'Mising player(s), something went wrong';
 			let next_player_set = {current_player:next_player, next_player:current_player};
 			if (!success) {
 				console.log(error);
