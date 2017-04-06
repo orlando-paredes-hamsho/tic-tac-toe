@@ -10,17 +10,13 @@ describe('Board', () => {
 			board = make_board();	
 		});
 		
-		it('returns empty board spaces', () => {
-			let spaces = board.spaces;
-			for(let space in spaces){
-				if(spaces.hasOwnProperty(space)) {
-					expect(spaces[space]).to.not.exist;
-				}
-			}
+		it('returns all board spaces as empty', () => {
+			expect(board.get_empty_spaces()).to.deep.equal(Object.getOwnPropertyNames(board.get_spaces()));
 		});
 		
+		
 		it('has 9 board spaces', () => {
-			let spaces = board.spaces;
+			let spaces = board.get_spaces();
 			const board_spaces = ['1','2','3','4','5','6','7','8','9'];
 			expect(Object.getOwnPropertyNames(spaces)).to.deep.equal(board_spaces);
 		});
@@ -43,6 +39,43 @@ describe('Board', () => {
 		});
     });
 	
+	context('Board is full', () => {	
+		
+		beforeEach('Make a new Board', () => {
+			board = make_board();
+			board.occupy({space: 1, marker: 'x'})
+			board.occupy({space: 2, marker: 'x'})
+			board.occupy({space: 3, marker: 'o'})
+			board.occupy({space: 4, marker: 'o'})
+			board.occupy({space: 5, marker: 'o'})
+			board.occupy({space: 6, marker: 'x'})
+			board.occupy({space: 7, marker: 'x'})
+			board.occupy({space: 8, marker: 'o'})
+			board.occupy({space: 9, marker: 'x'})
+		});
+		
+		it('returns no empty spaces', () => {
+			expect(board.get_empty_spaces()).to.deep.equal([]);
+		});
+		
+		it('renders the marker when the space is occupied', () => {
+			expect(board.render_space(1)).to.equal('x');
+		});
+		
+		it('renders a full board', () => {
+			const full_board = (
+				'|---|---|---|\n' + 
+				'| x | x | o |\n' +
+				'|---|---|---|\n' +
+				'| o | o | x |\n' +
+				'|---|---|---|\n' +
+				'| x | o | x |\n' +
+				'|---|---|---|\n' 
+			);
+			expect(board.render()).to.equal(full_board);
+		});
+    });
+	
 	context('Space wants to be occupied', () => {	
 		
 		beforeEach('Make a new Board', () => {
@@ -55,9 +88,14 @@ describe('Board', () => {
 				expect(board.occupy({space: 1, marker: 'x'}).success).to.be.true;
 			});
 			
+			it('returns empty spaces minus the occupied one', () => {
+				board.occupy({space: 1, marker: 'x'});
+				expect(board.get_empty_spaces()).to.deep.equal( ['2','3','4','5','6','7','8','9']);
+			});
+			
 			it('Adds the respective marker to the space', () => {
 				board.occupy({space: 1, marker: 'x'});
-				expect(board.spaces[1]).to.equal('x');
+				expect(board.get_spaces()[1]).to.equal('x');
 			});
 			
 			it('Renders the marker on the board', () => {
@@ -89,7 +127,7 @@ describe('Board', () => {
 			it('It doesn\'t add the space to the board', () => {
 				board.occupy({space: 0, marker: 'x'});
 				const board_spaces = ['1','2','3','4','5','6','7','8','9'];
-				expect(Object.getOwnPropertyNames(board.spaces)).to.deep.equal(board_spaces);
+				expect(Object.getOwnPropertyNames(board.get_spaces())).to.deep.equal(board_spaces);
 			});
 			
 			it('Doesn\'t render the marker on the board', () => {
@@ -123,7 +161,7 @@ describe('Board', () => {
 			it('It doesn\'t change the value in the space', () => {
 				board.occupy({space: 1, marker: 'x'}); //First call
 				board.occupy({space: 1, marker: 'o'}); //Second call
-				expect(board.spaces[1]).to.equal('x');
+				expect(board.get_spaces()[1]).to.equal('x');
 			});
 			
 			it('Doesn\'t change the marker on the board', () => {

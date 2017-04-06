@@ -10,11 +10,28 @@
  */
 function make_board() {	
 	
+	// 9 spaces in our board, all of them empty
+	const spaces = {
+		1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null, 9: null
+	};
+	
 	// Board Prototype
 	const board = {
-		// 9 spaces in our board, all of them empty
-		spaces: {
-			1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null, 9: null
+		/**
+		* get_empty_spaces() returns the spaces object
+		* @return {Object} spaces
+		**/
+		get_spaces() {
+			return spaces;
+		},
+		/**
+		* get_empty_spaces() returns the empty spaces in the board
+		* @return {Array} value of the empty spaces in the array
+		**/
+		get_empty_spaces() {
+			return Object.getOwnPropertyNames(spaces).filter((space) => {
+				return !spaces[space];
+			});
 		},
 		/**
 		* render_space(space) decides what string to output for a given space
@@ -22,7 +39,7 @@ function make_board() {
 		* @return {String} value inside the space, or the space number itself
 		**/
 		render_space(space) {
-			return (this.spaces[space]) ? this.spaces[space] : space;
+			return (spaces[space]) ? spaces[space] : space;
 		},
 		/**
 		* occupy({space, marker}) places a given marker on a space on the board
@@ -31,10 +48,10 @@ function make_board() {
 		* @return {Object} with boolean success, and either an error message or the space that got occupied.  
 		**/
 		occupy({space, marker}) {
-			if (this.spaces[space]) {
+			if (spaces[space]) {
 				return { success: false, error: 'This space is already taken' };
-			} else if (this.spaces.hasOwnProperty(space)) {
-				this.spaces[space] = marker;
+			} else if (spaces.hasOwnProperty(space)) {
+				spaces[space] = marker;
 				return {success: true, space};
 			} else {
 				return { success: false, error: 'That space is not in the board' };
