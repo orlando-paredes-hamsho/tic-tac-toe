@@ -68,10 +68,10 @@ describe.only('Perfect AI', () => {
 		
 		context('Moves after the first', () => {
 			context('moves with only 2 spaces taken', () => {
-				context('The oponent took a corner', () => {
+				context('The opponent took a corner', () => {
 					it('');
 				});
-				context('The oponent took one of the sides', () => {
+				context('The opponent took one of the sides', () => {
 					it('');
 				})
 			});
