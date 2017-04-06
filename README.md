@@ -24,7 +24,7 @@ Then once it's downloaded
     npm install
 ```
 
-## Run the dev server ##
+## Play the game (only pvp available for now) ##
 
 From your terminal run:
 
@@ -33,3 +33,22 @@ From your terminal run:
 ```
 
 Enjoy
+
+## Additional Scripts ##
+
+### For testing:
+
+```bash
+    npm run test 
+```
+
+Testing will also run **prior to pushing to a remote server.**
+
+### For Linting:
+
+```bash
+    npm run lint
+```
+
+Linting will also run **prior to commiting and/or pushing to a remote server.**
+
