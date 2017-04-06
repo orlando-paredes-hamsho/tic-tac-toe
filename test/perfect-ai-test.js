@@ -4,7 +4,7 @@ import make_board from '../src/factories/make-board';
 
 let perfect_ai, board; 
 
-describe.only('Perfect AI', () => {
+describe('Perfect AI', () => {
 	context('Creating the AI', () => {
 		context('When type of \'perfect\' gets passed in', () => {
 			it('returns an object', () => {
