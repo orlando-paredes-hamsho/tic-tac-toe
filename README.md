@@ -7,7 +7,7 @@ Simple Tic Tac Toe Game
 ## TODOS ##
 
 - [ ] Re-do Comments.
-- [ ] Unit Test Game.
+- [x] Unit Test Game.
 - [ ] Vs AI mode.
 
 ## Install ##
