@@ -95,7 +95,7 @@ const make_ai = (type = 'perfect') => {
 	* @return {String} Move carefully chosen by the AI
 	**/
 	const choose_move = ({player_spaces, opponent_spaces, available_spaces}) => {
-		let available_edges; // Initialize variable for available edges
+		let available_corners; // Initialize variable for available corners
 		// Get the moves that get the current player closest to winning
 		const offensive_moves = get_significant_moves({player_spaces, opponent_spaces, available_spaces});
 		// Get the moves that keep the current player from losing
@@ -117,9 +117,9 @@ const make_ai = (type = 'perfect') => {
 			return get_furthest_corner_from_edge(opponent_spaces[0]);
 		}
 		
-		//If nothing else works for some reason, return whatever, but prefer edges
-		available_edges = _.difference(available_spaces, corners);
-		return (available_edges.length > 0 ) ? available_edges[0] : available_spaces[0];
+		//If nothing else works for some reason, return whatever, but prefer corners
+		available_corners = _.intersection(available_spaces, corners);
+		return (available_corners.length > 0 ) ? available_corners[0] : available_spaces[0];
 	};
 	
 	/**
