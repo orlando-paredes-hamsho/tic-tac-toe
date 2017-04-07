@@ -4,7 +4,7 @@ import make_ai from '../src/factories/make-ai';
 let perfect_ai; 
 
 describe('Perfect AI', () => {
-	
+
 	context('Creating the AI', () => {
 		context('When type of \'perfect\' gets passed in', () => {
 			it('returns an object', () => {

@@ -12,15 +12,21 @@
 const make_player = (marker) => {
 	// Tic-tac-toe markers are only x's and o's
 	const valid_markers = ['x','o'];
-	
+	// Array of claimed spaces
+	const spaces_claimed = [];
 	// If it's not a valid marker, throw an error
 	if (valid_markers.indexOf(marker) === -1) {
 		throw 'Valid marker values are \'x\' and \'o\'';
 	}
 	
 	return {
-		// Array of claimed spaces
-		spaces_claimed: [],
+		/**
+		* get_spaces() returns the spaces we have claimed
+		* @return {Array} spaces claimed
+		**/
+		get_spaces() {
+			return spaces_claimed;
+		},
 		// String to identify the player
 		marker,
 		/**
@@ -31,7 +37,7 @@ const make_player = (marker) => {
 		**/
 		claim_space({success, space, error = ''}) {
 			if(success && !space) return {success: false, error: 'No space was provided'};
-			if (success) this.spaces_claimed.push(space);
+			if (success) spaces_claimed.push(space);
 			return {success, error};
 		}
 	};

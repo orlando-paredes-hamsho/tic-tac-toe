@@ -16,7 +16,7 @@ describe('Player', () => {
 			});
 			
 			it('Has 0 claimed spaces', () => {
-				expect(player.spaces_claimed.length).to.equal(0);
+				expect(player.get_spaces().length).to.equal(0);
 			});
 			
 		});
@@ -37,7 +37,7 @@ describe('Player', () => {
     	context('Player is successfull', () => {
     		it('adds the claimed space to the spaces_claimed array', () => {
     			player.claim_space({ success: true, space: 1 });
-    			expect(player.spaces_claimed).to.include(1);
+    			expect(player.get_spaces()).to.include(1);
     		});
     		
     		it('returns an object with a value of true for success and an empty error', () => {
