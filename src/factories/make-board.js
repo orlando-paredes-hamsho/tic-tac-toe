@@ -62,7 +62,6 @@ function make_board() {
 		* @return {String} representation of the current state of the board 
 		**/
 		render() {
-			//TODO: Switch to template string
 			return (
 				'|---|---|---|\n' + 
 				'| ' + this.render_space(1) + ' | ' + this.render_space(2) + ' | ' + this.render_space(3) + ' |\n' +
