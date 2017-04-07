@@ -1,5 +1,6 @@
 import make_board from './factories/make-board';
 import make_player from './factories/make-player';
+import make_ai from './factories/make-ai';
 import request_user_action from './utility/request-user-action';
 import victory from './utility/victory';
 
@@ -11,9 +12,9 @@ import victory from './utility/victory';
  * @method {String} draw_board()
  * @method {Void} start()
  */
-const game = ((make_board, make_player, victory_conditions) => {
+const game = ((make_board, make_player, victory_conditions, AI) => {
 	
-	let board, player1, player2;
+	let board, player1, player2, use_ai;
 	/**
 	* draw_board() outputs a rendered board to the console
 	**/
@@ -31,17 +32,47 @@ const game = ((make_board, make_player, victory_conditions) => {
 		}
 		return 'continue';
 	};
+	
 	/**
-	 * @protected select_next_player_set
+	 * @private request_ai_move(players) recursively call's itself for the duration of a game loop.
 	 **/
-	const select_next_player_set = ({success, error = ''}, {current_player, next_player}) => {
-		if(!current_player || !next_player) throw 'Mising player(s), something went wrong';
-		let next_player_set = {current_player:next_player, next_player:current_player};
-		if (!success) {
-			console.log(error);
-			next_player_set = {current_player, next_player};
+	const request_ai_move = ({current_player, next_player}) => {
+		const occupied_spaces = {
+			player_spaces: current_player.get_spaces(),
+			opponent_spaces: next_player.get_spaces()
+		};
+		const space = AI.move(occupied_spaces);
+		current_player.claim_space(board.occupy({space, marker: current_player.marker}));
+		console.log(`Player '${current_player.marker}', chose '${space}'`);
+		request_player_move({current_player:next_player, next_player:current_player});
+	};
+	
+	/**
+	* @private choose_outcome({current_player, next_player})
+	**/
+	
+	const choose_outcome = ({current_player, next_player}) => {
+		const board_full = (board.get_empty_spaces().length === 0);
+		const player_victory = victory_conditions.claim_victory(current_player.get_spaces());
+		switch(resolve(player_victory, board_full)) {
+		case 'victory':
+			draw_board();
+			console.log(`Player '${current_player.marker}', wins`);
+			start();
+			break;
+		case 'tie':
+			draw_board();
+			console.log('It\'s a tie!');
+			start();
+			break;
+		case 'continue':
+			if (use_ai) {
+				request_ai_move({current_player:next_player, next_player:current_player});
+			} else {
+				request_player_move({current_player:next_player, next_player:current_player});
+			}
+			break;
 		}
-		return next_player_set;
 	};
 	
 	/**
@@ -51,42 +82,43 @@ const game = ((make_board, make_player, victory_conditions) => {
 		draw_board();
 		return request_user_action(`Player '${current_player.marker}', please choose a space to occupy (use the numbers on the board)`)
 			.then((space) => {
-				const was_space_occupied = board.occupy({space, marker: current_player.marker});
-				const space_claimed = current_player.claim_space(was_space_occupied);
-				const board_full = (board.get_empty_spaces().length === 0);
-				const player_victory = victory_conditions.claim_victory(current_player.get_spaces());
-				switch(resolve(player_victory, board_full)) {
-				case 'victory':
-					draw_board();
-					console.log(`Player '${current_player.marker}', wins`);
-					start();
-					break;
-				case 'tie':
-					draw_board();
-					console.log('It\'s a tie!');
-					start();
-					break;
-				case 'continue':
-					request_player_move(select_next_player_set(space_claimed, {current_player,next_player}));
-					break;
+				const space_claimed = current_player.claim_space(board.occupy({space, marker: current_player.marker}));
+				if(space_claimed.success) {
+					choose_outcome({current_player, next_player});
+				} else {
+					console.log(space_claimed.error);
+					request_player_move({current_player, next_player});
 				}
 			});
 	};
+	
 	
 	/**
 	* @public start() begins a full tic-tac-toe game loop
 	**/
 	const start = () => {
-		return request_user_action('Do you wish to start a new game? (Y/N)').then(
+		console.log('Choose one of the following');
+		console.log('1.- VS AI');
+		console.log('2.- VS Player');
+		console.log('3.- Quit');
+		return request_user_action('Your Choice: ').then(
 			(response) => {
 				switch(response.toUpperCase()) {
-				case 'Y':
+				case '1':
+					use_ai = true;
 					board = make_board();
 					player1 = make_player('o');
 					player2 = make_player('x');
 					request_player_move({current_player: player1, next_player: player2});
 					break;
-				case 'N':
+				case '2':
+					use_ai = false;
+					board = make_board();
+					player1 = make_player('o');
+					player2 = make_player('x');
+					request_player_move({current_player: player1, next_player: player2});
+					break;
+				case '3':
 					console.log('Well Alright then');
 					process.exit();
 					break;
@@ -103,9 +135,8 @@ const game = ((make_board, make_player, victory_conditions) => {
 	//exposing protected and public methods
 	return {
 		resolve,
-		select_next_player_set,
 		start		
 	};
-})(make_board, make_player, victory);
+})(make_board, make_player, victory, make_ai());
 
 export default game;
