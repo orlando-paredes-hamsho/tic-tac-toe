@@ -14,6 +14,7 @@ import victory from './utility/victory';
  */
 const game = ((make_board, make_player, victory_conditions, AI) => {
 	
+	//Setup variables
 	let board, player1, player2, use_ai;
 	/**
 	* draw_board() outputs a rendered board to the console
@@ -58,12 +59,12 @@ const game = ((make_board, make_player, victory_conditions, AI) => {
 		case 'victory':
 			draw_board();
 			console.log(`Player '${current_player.marker}', wins`);
-			start();
+			boot_up();
 			break;
 		case 'tie':
 			draw_board();
 			console.log('It\'s a tie!');
-			start();
+			boot_up();
 			break;
 		case 'continue':
 			if (use_ai) {
@@ -91,12 +92,21 @@ const game = ((make_board, make_player, victory_conditions, AI) => {
 				}
 			});
 	};
-	
+	/**
+	* public start(ai) sets up the game
+	**/
+	const start = ({ai}) => {
+		use_ai = ai;
+		board = make_board();
+		player1 = make_player('o');
+		player2 = make_player('x');
+		request_player_move({current_player: player1, next_player: player2});
+	};
 	
 	/**
-	* @public start() begins a full tic-tac-toe game loop
+	* @public boot_up() begins a full tic-tac-toe game loop
 	**/
-	const start = () => {
+	const boot_up = () => {
 		console.log('Choose one of the following');
 		console.log('1.- VS AI');
 		console.log('2.- VS Player');
@@ -105,18 +115,10 @@ const game = ((make_board, make_player, victory_conditions, AI) => {
 			(response) => {
 				switch(response.toUpperCase()) {
 				case '1':
-					use_ai = true;
-					board = make_board();
-					player1 = make_player('o');
-					player2 = make_player('x');
-					request_player_move({current_player: player1, next_player: player2});
+					start({ai:true});
 					break;
 				case '2':
-					use_ai = false;
-					board = make_board();
-					player1 = make_player('o');
-					player2 = make_player('x');
-					request_player_move({current_player: player1, next_player: player2});
+					start({ai:false});
 					break;
 				case '3':
 					console.log('Well Alright then');
@@ -124,7 +126,7 @@ const game = ((make_board, make_player, victory_conditions, AI) => {
 					break;
 				default:
 					console.log('Nope, don\'t know what that means.');
-					start();
+					boot_up();
 					break;
 				}
 
@@ -134,8 +136,17 @@ const game = ((make_board, make_player, victory_conditions, AI) => {
 	
 	//exposing protected and public methods
 	return {
-		resolve,
-		start		
+		boot_up,
+		start,
+		get_config() {
+			return {
+				board,
+				player1,
+				player2,
+				use_ai
+			};
+		},
+		resolve	
 	};
 })(make_board, make_player, victory, make_ai());
 

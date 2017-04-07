@@ -1,9 +1,60 @@
 import chai, { expect } from 'chai';
 import game from '../src/game';
-
-let success, current_player, next_player;
+import {stdin as callable_stdin } from 'mock-stdin';
 
 describe('Game', () => {
+    
+    context('Game has not booted up', () => {
+        it('returns undefined for player1', () => {
+            expect(game.get_config().player1).to.not.exist;
+        });
+        
+        it('returns undefined for player2', () => {
+            expect(game.get_config().player2).to.not.exist;
+        });
+        
+        it('returns undefined for board', () => {
+            expect(game.get_config().board).to.not.exist;
+        });
+        
+        it('returns undefined for use_ai', () => {
+            expect(game.get_config().use_ai).to.not.exist;
+        });
+    });
+    
+    context('Game after booting up', () => {
+        context('AI Game', () => {
+            beforeEach('Start the game', () => {
+                game.start({ai:true});
+            });
+            
+            it('returns has a player1', () => {
+                expect(game.get_config().player1).to.exist;
+            });
+            
+            it('returns has a player2', () => {
+                expect(game.get_config().player2).to.exist;
+            });
+            
+            it('returns has a board', () => {
+                expect(game.get_config().board).to.exist;
+            });
+            
+            it('returns true for use_ai', () => {
+                expect(game.get_config().use_ai).to.be.true;
+            });
+        });
+        context('PVP Game', () => {
+            beforeEach('Start the game', () => {
+                game.start({ai:false});
+            });
+            
+            it('returns false for use_ai', () => {
+                expect(game.get_config().use_ai).to.be.false;
+            });
+        });
+    });
+    
     context('Resolve Game', () => { 
         context('All Parameters provided', () => {
             context('Victory true, tie false', () => {

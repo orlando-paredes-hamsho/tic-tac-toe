@@ -8,7 +8,7 @@ Simple Tic Tac Toe Game
 
 - [ ] Re-do Comments.
 - [x] Unit Test Game.
-- [ ] Vs AI mode.
+- [x] Vs AI mode.
 
 ## Install ##
 
