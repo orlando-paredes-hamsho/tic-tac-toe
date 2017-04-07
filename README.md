@@ -4,12 +4,6 @@
 
 Simple Tic Tac Toe Game
 
-## TODOS ##
-
-- [x] Re-do Comments.
-- [x] Unit Test Game.
-- [x] Vs AI mode.
-
 ## Install ##
 
 From your terminal run:
