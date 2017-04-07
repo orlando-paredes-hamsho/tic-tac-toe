@@ -74,6 +74,11 @@ describe('Perfect AI', () => {
 					let player_spaces = ['7'], opponent_spaces = ['5','2'];
 					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('8');
 				});
+				
+				it('Chooses the right move on opponent taking a corner too', () => {
+					let player_spaces = ['3'], opponent_spaces = ['5','7'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('1');
+				});
 			});
 			
 			context('Win Condition Moves', () => {
@@ -99,9 +104,9 @@ describe('Perfect AI', () => {
 			});
 			
 			context('Neutral Moves', () => {
-				it('Chooses an edge if available', () => {
+				it('Chooses a corner if available', () => {
 					let player_spaces = ['5'], opponent_spaces = ['3', '7'];
-					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('2');
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('1');
 				});
 			});
 		});
