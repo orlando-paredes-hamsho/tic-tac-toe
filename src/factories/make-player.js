@@ -9,17 +9,17 @@
  * @method {Object} claim_space({Object} {{Boolean} success, {Number} space, {String} error })
  */
 const make_player = (marker) => {
-	const valid_markers = ['x','o']; // Tic-tac-toe markers are only x's and o's
-	const spaces_claimed = []; // Array of claimed spaces
+	const valid_markers = ['x','o']; // @private valid_markers - only 'x' and 'o' allowed
+	const spaces_claimed = []; // @private spaces_claimed - Array of claimed spaces
 	
 	// If it's not a valid marker, throw an error
 	if (valid_markers.indexOf(marker) === -1) throw 'Valid marker values are \'x\' and \'o\'';
 	
 	return {
-		// String to identify the player
+		// @public marker - String to identify the player
 		marker,
 		/**
-		* claim_space(space) if we successfully claimed a space, add it to our spaces claimed.
+		* @public claim_space(space) if we successfully claimed a space, add it to our spaces claimed.
 		* @param {Boolean} success
 		* @param {Number} space that we want to claim
 		* @param {String} error in case we had one
@@ -31,7 +31,7 @@ const make_player = (marker) => {
 			return {success, error};
 		},
 		/**
-		* get_spaces() returns the spaces we have claimed
+		* @ public get_spaces() returns the spaces we have claimed
 		* @return {Array} spaces claimed
 		**/
 		get_spaces() {

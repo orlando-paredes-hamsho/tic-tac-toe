@@ -10,7 +10,7 @@
  */
 function make_board() {	
 	
-	// 9 spaces in our board, all of them empty
+	// @private spaces - 9 spaces in our board, all of them initialized empty
 	const spaces = {
 		1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null, 9: null
 	};
@@ -18,14 +18,14 @@ function make_board() {
 	// Board Prototype
 	const board = {
 		/**
-		* get_empty_spaces() returns the spaces object
+		* @public get_spaces() returns the spaces object
 		* @return {Object} spaces
 		**/
 		get_spaces() {
 			return spaces;
 		},
 		/**
-		* get_empty_spaces() returns the empty spaces in the board
+		* @public get_empty_spaces() returns the empty spaces in the board
 		* @return {Array} value of the empty spaces in the array
 		**/
 		get_empty_spaces() {
@@ -34,7 +34,7 @@ function make_board() {
 			});
 		},
 		/**
-		* render_space(space) decides what string to output for a given space
+		* @public render_space(space) decides what string to output for a given space
 		* @param {Number} space, whatever space on the board we want to render
 		* @return {String} value inside the space, or the space number itself
 		**/
@@ -42,7 +42,7 @@ function make_board() {
 			return (spaces[space]) ? spaces[space] : space;
 		},
 		/**
-		* occupy({space, marker}) places a given marker on a space on the board
+		* @public occupy({space, marker}) places a given marker on a space on the board
 		* @param {Number} space, whatever space on the board we want to occupy
 		* @param {String} marker, the marker we'll use to represent the player that occupies the space.
 		* @return {Object} with boolean success, and either an error message or the space that got occupied.  
@@ -58,7 +58,7 @@ function make_board() {
 			}
 		},
 		/**
-		* render() returns the current state of the board
+		* @public render() returns the current state of the board
 		* @return {String} representation of the current state of the board 
 		**/
 		render() {
