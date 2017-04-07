@@ -4,29 +4,18 @@
  * @return {Object} player
  ** 
  * player object
- * @prop {Array} spaces_claimed
  * @prop {String} marker
- * @method {Object} move({Number} space)
- * @method {Void} claim_space({Object} {{Boolean} success, {Number} space, {String} error })
+ * @method {Array} get_spaces
+ * @method {Object} claim_space({Object} {{Boolean} success, {Number} space, {String} error })
  */
 const make_player = (marker) => {
-	// Tic-tac-toe markers are only x's and o's
-	const valid_markers = ['x','o'];
-	// Array of claimed spaces
-	const spaces_claimed = [];
+	const valid_markers = ['x','o']; // Tic-tac-toe markers are only x's and o's
+	const spaces_claimed = []; // Array of claimed spaces
+	
 	// If it's not a valid marker, throw an error
-	if (valid_markers.indexOf(marker) === -1) {
-		throw 'Valid marker values are \'x\' and \'o\'';
-	}
+	if (valid_markers.indexOf(marker) === -1) throw 'Valid marker values are \'x\' and \'o\'';
 	
 	return {
-		/**
-		* get_spaces() returns the spaces we have claimed
-		* @return {Array} spaces claimed
-		**/
-		get_spaces() {
-			return spaces_claimed;
-		},
 		// String to identify the player
 		marker,
 		/**
@@ -34,11 +23,19 @@ const make_player = (marker) => {
 		* @param {Boolean} success
 		* @param {Number} space that we want to claim
 		* @param {String} error in case we had one
+		* @return {Object} containing success and error
 		**/
 		claim_space({success, space, error = ''}) {
 			if(success && !space) return {success: false, error: 'No space was provided'};
 			if (success) spaces_claimed.push(space);
 			return {success, error};
+		},
+		/**
+		* get_spaces() returns the spaces we have claimed
+		* @return {Array} spaces claimed
+		**/
+		get_spaces() {
+			return spaces_claimed;
 		}
 	};
 };
