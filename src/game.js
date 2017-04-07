@@ -59,7 +59,7 @@ const game = ((make_board, make_player, victory_conditions, ai) => {
 		const space = ai.move(occupied_spaces);
 		current_player.claim_space(board.occupy({space, marker: current_player.marker}));
 		console.log(`Player '${current_player.marker}', chose '${space}'`);
-		request_player_move({current_player:next_player, next_player:current_player});
+		choose_outcome({current_player, next_player}, false);
 	};
 	
 	/**
@@ -68,7 +68,7 @@ const game = ((make_board, make_player, victory_conditions, ai) => {
 	* @param {Player} current_player
 	* @param {Player} next_player
 	**/
-	const choose_outcome = ({current_player, next_player}) => {
+	const choose_outcome = ({current_player, next_player}, use_ai) => {
 		const board_full = (board.get_empty_spaces().length === 0);
 		const player_victory = victory_conditions.claim_victory(current_player.get_spaces());
 		switch(resolve(player_victory, board_full)) {
@@ -106,7 +106,7 @@ const game = ((make_board, make_player, victory_conditions, ai) => {
 			.then((space) => {
 				const space_claimed = current_player.claim_space(board.occupy({space, marker: current_player.marker}));
 				if(space_claimed.success) {
-					choose_outcome({current_player, next_player});
+					choose_outcome({current_player, next_player}, use_ai);
 				} else {
 					console.log(space_claimed.error);
 					request_player_move({current_player, next_player});
