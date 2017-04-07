@@ -1,10 +1,10 @@
 import chai, { expect } from 'chai';
 import make_ai from '../src/factories/make-ai';
-import make_board from '../src/factories/make-board';
 
-let perfect_ai, board; 
+let perfect_ai; 
 
-describe.only('Perfect AI', () => {
+describe('Perfect AI', () => {
+	
 	context('Creating the AI', () => {
 		context('When type of \'perfect\' gets passed in', () => {
 			it('returns an object', () => {
@@ -32,48 +32,77 @@ describe.only('Perfect AI', () => {
 		context('First Move', () => {
 			context('When the board is empty', () => {
 				it('chooses the 5th space', () => {
-					board = make_board();
 					perfect_ai = make_ai();
-					expect(perfect_ai.move(board.get_empty_spaces())).to.equal(5);
+					expect(perfect_ai.move({player_spaces:[],opponent_spaces:[]})).to.equal('5');
 				});
 			});
 
 			context('When the board has spaces occupied', () => {
-				beforeEach('Make a new board', () => {
-					board = make_board();
+				beforeEach('Make new ai', () => {
 					perfect_ai = make_ai();
 				});
 
 				it('chooses a different space', () => {
-					board.occupy({space: 5, marker: 'o'});
-					expect(perfect_ai.move(board.get_empty_spaces())).to.not.equal(5);
-				});
-
-				it('will pick a different corner over several games', () => {
-					board.occupy({space: 5, marker: 'o'});
-					let corner = perfect_ai.move(board.get_empty_spaces()), 
-						different_corner = perfect_ai.move(board.get_empty_spaces()), 
-						same = true;
-					while(same) {
-						if(corner === different_corner) {
-							different_corner = perfect_ai.move(board.get_empty_spaces());
-						} else {
-							same = false;
-						}
-					}
-					expect(same).to.be.false;
+					expect(perfect_ai.move({player_spaces:[], opponent_spaces:['5']})).to.not.equal('5');
 				});
 			});
+			
 		});
 		
 		context('Moves after the first', () => {
-			context('moves with only 2 spaces taken', () => {
+			context('AI took the center', () => {
 				context('The opponent took a corner', () => {
-					it('');
+					it('Chooses the right move', () => {
+						let player_spaces = ['5'], opponent_spaces = ['7'];
+						expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('3');
+					});
 				});
 				context('The opponent took one of the sides', () => {
-					it('');
+					it('Chooses the right move', () => {
+						let player_spaces = ['5'], opponent_spaces = ['8'];
+						expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('1');
+					});
 				})
+			});
+			context('Opponent took the center', () => {
+				it('Chooses the right move on opponent taking a corner too', () => {
+					let player_spaces = ['7'], opponent_spaces = ['5','1'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('9');
+				});
+				
+				it('Chooses the right move on opponent taking an edge too', () => {
+					let player_spaces = ['7'], opponent_spaces = ['5','2'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('8');
+				});
+			});
+			
+			context('Win Condition Moves', () => {
+				it('Chooses the offensive move if it has a win condition', () => {
+					let player_spaces = ['5', '1'], opponent_spaces = ['2','4'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('9');
+				});
+				
+				it('Chooses the offensive move if it has a win condition with too many values', () => {
+					let player_spaces = ['5', '8', '1'], opponent_spaces = ['2','4'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('9');
+				});
+				
+				it('Chooses the defensive move if the opponent has a win condition', () => {
+					let player_spaces = ['7'], opponent_spaces = ['5','2'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('8');
+				});
+				
+				it('Chooses the offensive move if both it and the opponent have win conditions', () => {
+					let player_spaces = ['5', '2'], opponent_spaces = ['3', '6'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('8');
+				});
+			});
+			
+			context('Neutral Moves', () => {
+				it('Chooses an edge if available', () => {
+					let player_spaces = ['5'], opponent_spaces = ['3', '7'];
+					expect(perfect_ai.move({player_spaces, opponent_spaces})).to.equal('2');
+				});
 			});
 		});
 	});
