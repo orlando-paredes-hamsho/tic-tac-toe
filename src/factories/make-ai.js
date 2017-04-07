@@ -5,47 +5,103 @@ import {get_random_corner, get_opposite_corner, get_furthest_corner_from_edge} f
 /**
 * make_ai factory
 * @return {Object} ai
-**/
+** 
+* ai object
+* @prop {string} type
+* @method {String} move
+*/
 
 const make_ai = (type = 'perfect') => {
 	
+	// @private full_board - constant for full array of board spaces
 	const full_board = [ '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	// @private corners - constant for corners of the board
 	const corners = ['1', '3', '7', '9'];
+	// @private center - constant for center of the board
 	const center = '5';
+	// @private win_conditions - instance of win_conditions form the victory utility
 	const {win_conditions} = victory;
 	
+	/**
+	* @private get_available_spaces(player_spaces, opponent_spaces)
+	* @param {Array} player_spaces
+	* @param {Array} opponent_spaces
+	* @return {Array} Unoccupied spaces
+	**/
 	const get_available_spaces = (player_spaces, opponent_spaces) => {
 		return _.difference(full_board.sort(), player_spaces.sort(),opponent_spaces.sort());
 	};
 	
+	/**
+	* @private first_move(available_spaces) make the best posible choice for first move
+	* If the center is available, take the center, else take a corner
+	* @param {Array} available_spaces
+	* @return {String} the chosen move
+	**/
 	const first_move = (available_spaces) => {
 		return (available_spaces.indexOf(center.toString()) > -1) ? center : get_random_corner(corners);
 	};
 	
+	/**
+	* @private get_available_win_conditions({win_conditions, opponent_spaces})
+	* Return win conditions that contain none of the opponent's spaces
+	* @param {Array} win_conditions
+	* @param {Array} opponent_spaces
+	* @return {Array} win_conditions that contain none of the opponent's spaces
+	**/
 	const get_available_win_conditions = ({win_conditions, opponent_spaces}) => {
 		return win_conditions.filter((condition) => {
+			// Check that both arrays have nothing in common
 			return (_.difference(condition, opponent_spaces).length === 3);
 		});
 	};
 	
+	/**
+	* @private filter_win_conditions({available_win_conditions, opponent_spaces})
+	* @param {Array} available_win_conditions
+	* @param {Array} player_spaces
+	* @return {Array} spaces that fulfill Win Conditions
+	**/
 	const filter_win_conditions = ({available_win_conditions, player_spaces}) => {
 		let move;
 		return available_win_conditions.map((condition) => {
+			// Check the similarities in between both arrays
 			move = _.difference(condition, player_spaces);
+			// If we're one move away from fulfilling the condition, return that move
 			if(move.length === 1) return move[0];
 		});
 	};
 	
+	/**
+	* @private get_significant_moves({player_spaces, opponent_spaces, available_spaces})
+	* @param {Array} available_spaces
+	* @param {Array} player_spaces
+	* @param {Array} opponent_spaces
+	* @return {Array} player win conditions that are available on the board
+	**/
 	const get_significant_moves = ({player_spaces, opponent_spaces, available_spaces}) => {
+		// Get the Win Conditions that our player can fulfill
 		const available_win_conditions = get_available_win_conditions({win_conditions, opponent_spaces});
-		return _.intersection(available_spaces, filter_win_conditions({available_win_conditions, player_spaces, opponent_spaces}));
+		
+		// Get the Win Conditions that are available on the board
+		return _.intersection(available_spaces, filter_win_conditions({available_win_conditions, player_spaces}));
 	};
 	
+	/**
+	* @private choose_move({player_spaces, opponent_spaces, available_spaces})
+	* @param {Array} available_spaces
+	* @param {Array} player_spaces
+	* @param {Array} opponent_spaces
+	* @return {String} Move carefully chosen by the AI
+	**/
 	const choose_move = ({player_spaces, opponent_spaces, available_spaces}) => {
+		let available_edges; // Initialize variable for available edges
+		// Get the moves that get the current player closest to winning
 		const offensive_moves = get_significant_moves({player_spaces, opponent_spaces, available_spaces});
+		// Get the moves that keep the current player from losing
 		const defensive_moves = get_significant_moves({player_spaces: opponent_spaces, opponent_spaces: player_spaces, available_spaces});
-		let available_edges;
 		
+		// Prioritize moves that make us win
 		if(offensive_moves.length > 0) {
 			return offensive_moves[0];
 		} else if (defensive_moves.length > 0) {
@@ -66,13 +122,19 @@ const make_ai = (type = 'perfect') => {
 		return (available_edges.length > 0 ) ? available_edges[0] : available_spaces[0];
 	};
 	
+	/**
+	* @public move({player_spaces, opponent_spaces})
+	* @param {Array} player_spaces
+	* @param {Array} opponent_spaces
+	* @return {String} Move carefully chosen by the AI
+	**/
 	const move = ({player_spaces, opponent_spaces}) => {
 		const available_spaces = get_available_spaces(player_spaces, opponent_spaces);
 		return (available_spaces.length >= 8) ? first_move(available_spaces) : choose_move({player_spaces, opponent_spaces, available_spaces});
 	};
 	
 	return {
-		type,
+		type, // @public {String} type, the type of AI, currently only 'perfect'
 		move
 	};
 };
