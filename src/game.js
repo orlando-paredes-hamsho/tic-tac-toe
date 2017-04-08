@@ -52,11 +52,7 @@ const game = ((make_board, make_player, victory_conditions, ai) => {
 	* @param {Player} next_player
 	**/
 	const request_ai_move = ({current_player, next_player}) => {
-		const occupied_spaces = {
-			player_spaces: current_player.get_spaces(),
-			opponent_spaces: next_player.get_spaces()
-		};
-		const space = ai.move(occupied_spaces);
+		const space = ai.get_move(current_player.get_spaces(), next_player.get_spaces());
 		current_player.claim_space(board.occupy({space, marker: current_player.marker}));
 		console.log(`Player '${current_player.marker}', chose '${space}'`);
 		choose_outcome({current_player, next_player}, false);

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import victory from '../utility/victory';
 import {get_random_corner, get_opposite_corner, get_furthest_corner_from_edge} from '../utility/ai-helpers';
+import get_game_score from '../utility/minimax';
 
 /**
 * make_ai factory
@@ -21,6 +22,46 @@ const make_ai = (type = 'perfect') => {
 	const center = '5';
 	// @private win_conditions - instance of win_conditions form the victory utility
 	const {win_conditions} = victory;
+	
+	const get_move = (player_spaces,opponent_spaces) => {
+		let posible_spaces, score, scores;
+		const moves = {}, depth = 0;
+		const available_spaces = get_available_spaces(player_spaces, opponent_spaces).sort(() => {return 0.5 - Math.random();});
+		available_spaces.forEach( (space) => {
+			posible_spaces = [...player_spaces, space];
+			score = get_game_score(posible_spaces, opponent_spaces, 0);
+			if (score === 0) {
+				scores = _.flattenDeep(get_available_moves(posible_spaces, opponent_spaces, depth, false));
+				moves[space] = scores.reduce((x, y) => x + y) / scores.length;
+			} else {
+				moves[space] = score;
+			}
+		});
+		return Object.keys(moves).reduce((a, b) => { return moves[a] > moves[b] ? a : b; });
+	};
+	
+	
+	const get_available_moves = (player_spaces, opponent_spaces, depth, ai_turn = true) => {
+		let posible_spaces, score;
+		const available_spaces = get_available_spaces(player_spaces, opponent_spaces);
+		if (ai_turn) {
+			return available_spaces.map( (space) => {
+				posible_spaces = [...player_spaces, space];
+				score = get_game_score(posible_spaces, opponent_spaces, depth);
+				return (score === 0 && available_spaces.length > 1) 
+					? get_available_moves(posible_spaces, opponent_spaces, depth + 1, !ai_turn) 
+					: score;
+			});
+		} else {
+			return available_spaces.map( (space) => {
+				posible_spaces = [...opponent_spaces, space];
+				score = get_game_score(player_spaces, posible_spaces, depth);
+				return (score === 0 && available_spaces.length > 1) 
+					? get_available_moves(player_spaces, posible_spaces, depth + 1, !ai_turn) 
+					: score;
+			});
+		}
+	};
 	
 	/**
 	* @private get_available_spaces(player_spaces, opponent_spaces)
@@ -135,6 +176,7 @@ const make_ai = (type = 'perfect') => {
 	
 	return {
 		type, // @public {String} type, the type of AI, currently only 'perfect'
+		get_move,
 		move
 	};
 };

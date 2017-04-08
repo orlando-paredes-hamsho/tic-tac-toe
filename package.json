@@ -19,7 +19,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src",
-    "test": "mocha --require babel-register --recursive ./test",
+    "test": "mocha --require babel-register --recursive --timeout 0 ./test",
     "test:watch": "npm run test -- --watch",
     "game": "node --require babel-register src/index.js"
   },

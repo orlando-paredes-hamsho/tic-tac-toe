@@ -4,6 +4,24 @@ import make_ai from '../src/factories/make-ai';
 let perfect_ai; 
 
 describe('Perfect AI', () => {
+	
+	context('Getting Available Moves', () => {
+		beforeEach('Makes a new AI', () => {
+			perfect_ai = make_ai();
+		});
+		
+		it('logs available moves', () => {
+			perfect_ai.get_move([], []);
+		});
+		
+		it('logs available moves', () => {
+			perfect_ai.get_move(['5'], ['7']);
+		});
+		
+		it('logs available moves', () => {
+			perfect_ai.get_move(['9','8'], ['5','1']);
+		});
+	});
 
 	context('Creating the AI', () => {
 		context('When type of \'perfect\' gets passed in', () => {
