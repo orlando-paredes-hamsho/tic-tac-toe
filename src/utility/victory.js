@@ -25,7 +25,7 @@ const victory = {
 	claim_victory(claimed_spaces) {
 		let win = false;
 		this.win_conditions.forEach((condition) => {
-			if(_.difference(condition.sort(), claimed_spaces.sort()).length === 0) {
+			if(_.intersection(condition.sort(), claimed_spaces.sort()).length === 3) {
 				win = true;
 			}
 		}); 
